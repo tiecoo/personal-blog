@@ -1,34 +1,38 @@
 import React from "react"
 import { graphql, Link } from "gatsby"
 import Header from "../components/Header"
+import 'bootstrap/dist/css/bootstrap.css';
 
 const Layout = ({ data }) => {
   const { edges } = data.allMarkdownRemark
   console.log(edges[0].node.frontmatter.title)
   return (
-    <div>
+    <div style={{
+      backgroundColor: "#000",
+                opacity: '0.7'
+    }}>
       <Header></Header>
-      <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                fontFamily: "avenir",
-              }}>
-        {edges.map(edge => {
-          const frontMatter = edge.node.frontmatter
-          console.log(frontMatter)
-          return (
-            <div
-              key={frontMatter.path}
-              style={{marginBottom: '1rem'}}
-            >
-                <Link to={frontMatter.path}>
-                {frontMatter.title}
-              </Link>
-            </div>
-          )
-        })}
+      <div className='jumbotron jumbotron-fluid'>
+        <div className="container"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  fontFamily: "avenir",
+                }}>
+                  <h1 style={{alignItems: 'center'}}>Posts</h1>
+          {edges.map(edge => {
+            const frontMatter = edge.node.frontmatter
+            return (                  
+                  <div className="card" style={{width: "18rem"}}>
+                    <div className="card-body">
+                      <h5 className="card-title">{frontMatter.title}</h5>
+                      <p className="card-text">{frontMatter.excerpt}</p>
+                      <Link to={frontMatter.path}>Link</Link>
+                    </div>
+                  </div>
+            )
+          })}
+        </div>
       </div>
     </div>
   )
@@ -43,6 +47,8 @@ export const query = graphql`
             title
             path
             date
+            tags
+            excerpt
           }
         }
       }
